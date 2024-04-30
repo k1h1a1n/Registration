@@ -1,0 +1,25 @@
+
+<div class="alertContainer">
+    <p class="SectionHeading">{{ data.header || ( data.action ? 'Confirm' : 'Alert' )}}</p>
+    <div class="alertMessageContainer">
+        <div class="alertImage"></div>
+        <div *ngIf="data.asHtml" class="textMessage" [innerHTML]="data.message"></div>
+        <div *ngIf="!data.asHtml"  class="textMessage">{{ data.title || data.message }}</div>
+    </div>
+    <div class="button-container">
+        <ng-container [ngTemplateOutlet]="data.action ? actionConfirmation : actionAlert "></ng-container>
+    </div>
+</div>
+
+<ng-template #actionAlert>
+    <div class="actionAlert">
+        <button mat-raised-button (click)="handleOK()">OK</button>
+    </div>
+</ng-template>
+
+<ng-template #actionConfirmation>
+    <div class="actionConfirmation">
+        <button mat-raised-button (click)="handleConfirm()">Yes</button>
+        <button mat-raised-button (click)="handleCancel()">No</button>
+    </div>
+</ng-template>

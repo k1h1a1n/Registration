@@ -1,0 +1,150 @@
+
+$primary-color: var(--primary-color);
+$secondary-color : var(--secondary-color);
+$tertiary-color : var(--tertiary-color);
+$text-color-white : var(--text-color-white);
+$text-color-black : var(--text-color-black);
+$input-outline : var(--input-outline);
+$shadow-shade : var(--shadow-shade);
+$call-to-action : var(--call-to-action);
+$white-background : var(--white-background);
+$body-background : var(--body-background);
+$table-header : var(--table-header);
+$table-header-shade : var(--table-header-shade);
+$table-row-border : var(--table-row-border);
+$table-hyperlink : var(--table-hyperlink);
+$action-button : var(--action-button);
+$action-button-shade : var(--action-button-shade);
+$outline-button : var(--outline-button);
+$input-label-background : var(--input-label-background);
+$container-background : var(--container-background);
+$radio-outer-circle : var(--radio-outer-circle);
+$menu-background : var(--menu-background);
+$menu-tabhover-background : var(--menu-tabhover-background);
+body{
+    --primary-color: #0957b8;
+    --secondary-color : #F1772E;
+    --tertiary-color : #c8e4f0;
+    --text-color-white : #ffffff;
+    --text-color-black :#263238;
+    --input-outline : #bbbbbb;
+    --shadow-shade : #c0c0c0;
+    --white-background : #ffffff;
+    --call-to-action : #309bae;
+    --body-background : rgb(255, 255, 255);
+    --container-background : #FBFBFB;
+    --radio-outer-circle : #00000073;
+    //table
+    --table-header :  #F1772E;
+    --table-header-shade : #FFBB7E;
+    --table-row-border : #5B5B5B;
+    --table-hyperlink : #1F82BC;
+    //table
+
+    //menu
+    --menu-background : #FAFAFF;
+    --menu-tabhover-background : #d7e6fa;
+    //menu
+    //action button
+    --action-button : #095BB8;
+    --action-button-shade : #4499A8;
+    --outline-button : #004A80;
+    //action button
+
+    //input label background
+    --input-label-background :  rgb(255, 255, 255);
+
+    //validation Succes And failure
+
+    --success-msgbg : #028f2a;
+    --failure-msgbg : crimson;
+}
+
+
+// rgb(246, 172, 105)
+// #0D77B8
+// #309BAE
+// #0957b8
+// #FF6600
+body.dark-theme{
+    --primary-color: #e7e7e7c5;
+    --secondary-color : #e7e7e7c5;
+    --tertiary-color : #e7e7e7c5;
+    --text-color-white : #263238;
+    --text-color-black :#e7e7e7c5;
+    --input-outline : #bbbbbb;
+    --shadow-shade : #c0c0c0;
+    --white-background : rgb(32, 33, 35);
+    --call-to-action : #309bae;
+    --body-background :rgb(32, 33, 35);
+    --container-background : rgb(32, 33, 35);
+    --radio-outer-circle : #e7e7e7c5;
+    //table
+    --table-header :  #5b5b5b;
+    --table-header-shade : #35322f;
+    --table-row-border : #5B5B5B;
+    --table-hyperlink : #1F82BC;
+    //table
+
+    //menu
+    --menu-background : rgb(32, 33, 35);
+    --menu-tabhover-background : #e7e7e7c5;
+    //menu
+
+    //action button
+    --action-button : #095BB8;
+    --action-button-shade : #4499A8;
+    --outline-button : #004A80;
+    //action button
+
+    //input label background
+    --input-label-background : rgb(32, 33, 35);
+
+    --success-msgbg : #028f2a;
+    --failure-msgbg : crimson;
+//write dark theme colors here
+}
+
+body.test-theme{
+    --primary-color: #0957b8;
+    --secondary-color : #F1772E;
+    --tertiary-color : #c8e4f0;
+    --text-color-white : #ffffff;
+    --text-color-black :#263238;
+    --input-outline : #bbbbbb;
+    --shadow-shade : #c0c0c0;
+    --white-background : #ffffff;
+    --call-to-action : #309bae;
+    --body-background : rgb(255, 255, 255);
+    --container-background : #FBFBFB;
+    --radio-outer-circle : #00000073;
+    //table
+    --table-header :  #18634f;
+    --table-header-text : white;
+    --table-header-shade : #0d3208;
+    --table-hyperlink : #1F82BC;
+    //table
+
+    //menu
+    --menu-background : #FAFAFF;
+    --menu-tabhover-background : #d7e6fa;
+    //menu
+    //action button
+    --action-button-shade : #028a00;
+    --action-button : #00ff79ad;
+    --outline-button : #004A80;
+    //action button
+
+    //input label background
+    --input-label-background :  rgb(255, 255, 255);
+
+    //validation Succes And failure
+
+    --success-msgbg : #028f2a;
+    --failure-msgbg : crimson;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+

@@ -1,0 +1,42 @@
+@mixin chkboxRadius {
+    border-radius: 4px;
+}
+
+@mixin headingBackground {
+    background: transparent linear-gradient(180deg, $table-header-shade 0%, $table-header 100%) 0% 0% no-repeat padding-box !important;
+}
+
+@mixin actionButtonBackground {
+    background: transparent linear-gradient(100deg, $action-button 0%, $action-button-shade 100%) 0% 0% no-repeat padding-box;
+}
+
+@mixin JCE {
+    justify-content: end !important;
+}
+
+@mixin imageIcon($backgroundSize, $imagePath) {
+    background-image: url($imagePath);
+    background-repeat: no-repeat;
+    background-size: $backgroundSize;
+    background-position: center;
+    height: $backgroundSize;
+    width: $backgroundSize;
+  }
+
+  @mixin flexSpaceAround {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  @mixin flexSpaceBetween {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @mixin flexSpaceAroundColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }

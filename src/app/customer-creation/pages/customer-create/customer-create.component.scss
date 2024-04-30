@@ -1,0 +1,72 @@
+
+@mixin grid($columns , $columnGap , $rowGap , $contentJustification) {
+    display: grid;
+    grid-template-columns: $columns;
+    column-gap: $columnGap;
+    row-gap: $rowGap;
+    justify-content: $contentJustification;
+}
+.getOtp{
+    display: grid;
+    grid-template-columns: 240px 100px;
+    align-items: baseline;
+    column-gap: 20px;
+    padding: 10px 10px 5px 10px ;
+}
+.nonError{
+    color: black;
+}
+
+.m-l{
+    margin-left: 15px;
+}
+.customerDetails{
+    display: grid;
+    grid-template-columns: 240px 200px 200px;
+    align-items: baseline;
+    gap: 20px;
+    padding: 10px 10px 0px 10px ;
+}
+
+.createLogin{
+    display: flex;
+    justify-content: flex-end;
+}
+.detailLabel{
+    letter-spacing: 1px;
+}
+
+.matSPinner{
+    height: 20px;
+    width: 20px;
+}
+
+.registrationForm{
+    .row1{
+        padding: 10px 10px 0px 10px;
+        @include grid(175px  175px  175px  350px , 20px , 0px , normal)
+    }
+    .row2{
+        padding: 10px 10px 0px 10px;
+        @include grid(130px  140px  140px  140px 180px, 20px , 0px , normal)
+    }
+    .row3{
+        padding: 18px 10px 0px 10px;
+        // @include grid(auto auto , 20px , 0px , normal);
+        textarea{
+            width: 100%;
+            padding: 4px 10px;
+            height: 30px;
+            box-shadow: 0px 0px 2px 1px var(--shadow-shade);
+        }
+        .address{
+            @include grid(auto auto auto , 40px , 0px , normal);
+            margin-right: 20px;
+            padding: 10px;
+        }
+    }
+    .row4{
+        padding: 0px 10px 10px 10px;
+        @include grid(170px  220px  140px 120px 140px, 20px , 0px , normal)
+    }
+}

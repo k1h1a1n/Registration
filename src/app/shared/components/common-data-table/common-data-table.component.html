@@ -1,0 +1,177 @@
+<div class="innerCommonWhiteDiv">
+    <form>
+        <div *ngIf="tableConfig" [ngClass]="tableConfig.tableHeader ? 'innerCommonHead' : ''">
+            <div class="MainHeadingText">{{tableConfig.tableHeader}}</div>
+
+            <!-- Table Filter/Add/Delete Options - as per configuration -->
+            <div class="TopHeaderIcons">
+                <div *ngIf="tableConfig.isFilterTable" >
+                    <input *ngIf="activeFilter" type="image" name="imgBtnResetFilter" id="imgBtnResetFilter" title="Filter Records" 
+                        src="assets/images/icon_resetFilter.png" (click)="onResetFilter()" style="border-width:0px;margin-left: 6px">
+
+                    <input type="image" name="imgBtnFilter" id="imgBtnFilter" title="Filter Records" 
+                        src="assets/images/icon_filter.png" (click)="displayFilter = true" style="border-width:0px;margin-left: 6px">
+                        
+                    <ng-container *ngIf="!displayFilter; else tableFilterTmpl"></ng-container>
+                </div>
+                <div *ngIf="tableConfig.isAdd" >
+                    <input type="image" name="imgBtnAdd" id="imgBtnAdd" title="Add {{tableConfig.tableHeader}}" 
+                        src="assets/images/icon_add.png" (click)="OnAddClick()" style="border-width:0px;margin-left: 6px">
+                </div>
+                <div *ngIf="tableConfig.isMultiDelete">
+                    <input type="image" name="imgBtnDelete" id="imgBtnDelete" title="Delete {{tableConfig.tableHeader}}" 
+                        src="assets/images/icon_delete.png" (click)="OnDeleteTable()" style="border-width:0px;margin-left: 6px">
+                </div>
+                <div *ngIf="tableConfig.isBack">
+                    <button class="backIcon extraSpace onHoverIcon" matTooltip="Back" 
+                    (click)="onBackClick()" type="button"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="Width100perc" [ngClass]="tableConfig?.isColumnScrollable ? 'cdt-scrollable' : ''">
+            <div class="FixedHeaderTable globalTable" [ngClass]="{ 
+                    'no-paginator' : (!paginatorOpts || paginatorOpts.pageSize == 0),
+                    'animated-table' : tableConfig?.isSingleSelection
+                 }">
+                <table mat-table [dataSource]="dataSource" class="Width100perc" matSort>
+                    
+                    <!-- When tableConfig.isMultiSelect = true, Checkbox for Row(s) / Record(s) selection will be display -->
+                    <ng-container matColumnDef="Select">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="onChangeSelection('ALL')"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                                (change)="onChangeSelection('ROW', row)" 
+                                [checked]="selection.isSelected(row)">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <!-- Column Header and Cell - Rendering -->
+                    <ng-container [matColumnDef]="column.name" *ngFor="let column of columnConfig ;let i=index;">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{column.label}}
+                        </th>
+                        <td mat-cell *matCellDef="let element" (click)=" onColSelect(column, element)">
+                            <span [ngClass]="{'link-text' : column?.isHyperlink}">{{element[column.name] | cellformat: column.type : 'dd-MMM-yyyy'}}</span>
+                        </td>
+                    </ng-container>
+
+                 
+                    <!-- Row Action Button - Template -->
+                    <ng-container *ngIf="tableConfig?.rowActions " matColumnDef="RowActMenu">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngTemplateOutlet="actionTmpl; context:{ $implicit: element }" ></ng-container>
+                        </td>
+                    </ng-container>
+
+                    <!-- Context Menu - Template -->
+                    <ng-container *ngIf="tableConfig?.contextMenu " matColumnDef="CtxMenu" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngTemplateOutlet="menuTmpl; context:{ $implicit: element }" ></ng-container>
+                        </td>
+                    </ng-container>                    
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+                        [ngClass]="{ 
+                            'selectedRow': selection.isSelected(row) 
+                        }" (click)="$event.stopPropagation(); onRowSelect(row)">
+                    </tr>
+                </table>
+                <div class="dataSourceEmpty" *ngIf="!isDataAvail">
+                    <ng-content select=".dataEmptyMessage"></ng-content>
+                </div>
+            </div>
+
+            <!-- Table Paginator - conditional display -->
+            <mat-paginator *ngIf="paginatorOpts?.pageSize > 0" [style.display]="isDataAvail ? 'block' : 'none'"
+                [pageSize] = "paginatorOpts.pageSize"
+                [pageSizeOptions] = "paginatorOpts.pageSizeOptions">
+            </mat-paginator>
+        </div>
+    </form>
+</div>
+
+<!-- Table Filter Template -->
+<ng-template #tableFilterTmpl>
+    <div class="tableFilter">
+        <form [formGroup]="filterForm" (ngSubmit)="onFilter()">
+            <div class="filterForm commonDataTableSrchIcon">
+                <ng-container *ngTemplateOutlet="filterTextTempl; context: { selFilterByCol : filterForm.value.filterByColumn }"></ng-container>
+                <span>in</span>
+                <mat-form-field appearance="outline">
+                    <mat-label>Column Name</mat-label>
+                    <mat-select formControlName="filterByColumn">
+                        <mat-option *ngFor="let col of columnConfig" [value]="col">
+                            {{col.label}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button id="submitBtn" class="searchIcon" type="submit"></button>
+            </div>
+            
+            <!-- Filter Text Template depends on type of selected Filter Column -->
+            <ng-template #filterTextTempl let-selFilterByCol="selFilterByCol">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{selFilterByCol?.label || 'Column Value'}}</mat-label>
+
+                    <ng-container [ngSwitch]="selFilterByCol?.type">
+                        <ng-container *ngSwitchCase="'date'">
+                                <mat-select formControlName="filtertext">
+                                    <mat-option *ngFor="let val of selFilterByCol.values" [value]="val">
+                                        {{val | date : 'dd-MMM-yyyy'}}
+                                    </mat-option>
+                                </mat-select>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                            <input type="text" matInput formControlName="filtertext" autocomplete="off" />
+                        </ng-container>
+                    </ng-container>
+                    
+                </mat-form-field>
+            </ng-template>
+
+        </form>
+    </div>
+</ng-template>
+
+<!-- Row Edit / Delete action context menu Template -->
+<ng-template #menuTmpl let-element>
+    <div class="row-menus">
+        <button mat-icon-button [matMenuTriggerFor]="rowMenu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #rowMenu="matMenu" xPosition="after">
+            <button *ngIf="tableConfig.contextMenu?.edit" mat-menu-item (click)="OnEditRow(element)">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+            </button>
+            <button *ngIf="tableConfig.contextMenu?.delete" mat-menu-item color="warn" (click)="OnDeleteRow(element)" >
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+            </button>
+        </mat-menu>
+    </div>
+</ng-template>
+
+<!-- Row Edit / Delete action context menu Template -->
+<ng-template #actionTmpl let-element>
+    <div class="row-actions">
+        <button *ngIf="tableConfig.rowActions?.edit" title="Edit"  
+            (click)="$event.stopPropagation();OnEditRow(element)" mat-icon-button>
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button *ngIf="tableConfig.rowActions?.delete" title="Delete" color="warn" 
+            (click)="$event.stopPropagation();OnDeleteRow(element);" mat-icon-button>
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+</ng-template>

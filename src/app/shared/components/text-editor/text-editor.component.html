@@ -1,0 +1,25 @@
+<form [formGroup]="form">
+    <div class="textEditorDialogContainer">
+        <div class="innerCommonHead">
+            <div class="MainHeadingText">Notes & Remarks</div>
+            <div  class="headingOptions">
+                <mat-icon (click)="saveClose()">close</mat-icon>
+            </div>
+        </div>
+        <div class="editor">
+            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+            </ngx-editor-menu>
+            <ngx-editor [editor]="editor" formControlName="editorContent">
+            </ngx-editor>
+        </div>
+
+        <div class="footer">
+            <div>
+                <button (click)="saveClose()" class="selectClose" type="button" mat-raised-button>
+                    Save & Close
+                </button>
+                <button mat-raised-button (click)="saveClose()" type="button">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>

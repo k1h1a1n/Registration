@@ -1,0 +1,51 @@
+.editor {
+  
+    ::ng-deep {
+     .NgxEditor {
+         min-height: 380px !important;
+         box-shadow: 0px 0px 2px 1px var(--shadow-shade);
+         border: none;
+         margin-top: 15px;
+       }
+     .NgxEditor__MenuBar{
+         box-shadow: 0px 0px 2px 1px var(--shadow-shade);
+         background: transparent linear-gradient(180deg, var(--table-header-shade) 0%, var(--table-header) 100%) 0% 0% no-repeat padding-box !important;
+ 
+     }
+    } 
+   }
+ 
+ .headingOptions{
+     mat-icon{
+         color: var(--primary-color);
+         margin-top: 4px;
+         cursor: pointer;
+         font-size: 28px;
+     }
+ }
+ .textEditorDialogContainer{
+     padding: 8px 20px;
+   }
+ 
+   .MainHeadingText{
+     letter-spacing: 2px;
+     font-size: 18px;
+   }
+ 
+   .footer{
+     margin-top: 15px;
+     display: flex;
+     justify-content: flex-end;
+     div{
+       display: grid;
+       grid-template-columns: auto auto;
+       gap: 20px;
+       button{
+         background: transparent linear-gradient(180deg, var(--table-header-shade) 0%, var(--table-header) 100%) 0% 0% no-repeat padding-box !important;
+         color: --var(text-color-black);
+         font-weight: 600;
+       font-size: 13px;
+       line-height: 32px;
+       }
+     }
+   }

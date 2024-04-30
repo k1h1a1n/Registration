@@ -1,0 +1,199 @@
+<div [ngClass]="{'listingTableDialogContainer' : config.isDialog}">
+    <div *ngIf="config.pageOptions && config.isDialog" class="ListingTableHeader">
+        <div>{{config.usedFor}}</div>
+        <mat-icon mat-dialog-close>close</mat-icon>
+    </div>
+    
+    <div class="tableFilter" [ngStyle]="{'padding-bottom' : !config.isFilterTable ? '10px' : '18px'}" *ngIf="config.isAdd || config.isFilterTable || config.isMultiDelete" [ngClass]="{'space-between':config.isFilterTable}">
+        <div *ngIf="config.isFilterTable" class="searchByColumn">
+            <div>
+                <div class="searchInput">
+                    <input [(ngModel)]="searchStr" (input)="applyFilter(searchStr , selectedFilterColumn)" type="text">
+                    <mat-icon>search</mat-icon>
+                </div>
+            </div>
+            <div>
+                In
+            </div>
+            <div class="searchInput">
+                <input [(ngModel)]="selectedFilterColumnHeader" readonly type="text">
+            </div>
+            <div class="filterIcon">
+                <mat-icon [matMenuTriggerFor]="menu">filter_alt</mat-icon>
+                <mat-menu #menu="matMenu" xPosition="after">
+                    <ng-container *ngFor="let column of config.columnConfig">
+                        <div class="menuItemContainer">
+                            <button type="button" *ngIf="column.header && column.header !== 'Select All'" (click)="selectedColumnFilter(column)" mat-menu-item>
+                                <span>{{column.header}}</span>
+                            </button>
+                        </div>
+                    </ng-container>
+                </mat-menu>
+            </div>
+        </div>
+        <div class="addDelete" [ngClass]="{'isAddWithoutFilter': !config.isFilterTable}">
+            <div [ngStyle]="{'margin-top' : !config.isFilterTable ? '0px' : '12px'}" class="delete" *ngIf="config.isMultiDelete">
+                <span class="addnewText">Delete</span>
+                <mat-icon>delete</mat-icon>
+            </div>
+            <div (click)="addNewAction()" [ngStyle]="{'margin-top' : !config.isFilterTable ? '0px' : '12px'}" *ngIf="config.isAdd">
+                <span class="addnewText">Add {{config.usedFor}}</span>
+                <mat-icon id="addIcon">add</mat-icon>
+            </div>
+        </div>
+    </div>
+    <div [style.min-height]="config.minHeight" class="globalTable">
+        <table matSort matSortDisableClear [matSortActive]="config.defaultSortingConfig?.active" [matSortDirection]="config.defaultSortingConfig?.direction" (matSortChange)="announceSortChange($event)" mat-table  [dataSource]="dataSource">
+            <ng-container *ngFor="let column of config.columnConfig; let i = index" [matColumnDef]="column.property">
+                <th mat-header-cell class="tableheading"  *matHeaderCellDef>
+                    <ng-container [ngSwitch]="column.header">
+                        <!-- Checkbox in the table header -->
+                        <ng-container *ngSwitchCase="'Select All'">
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()"></mat-checkbox>
+                        </ng-container>
+                        <!-- Other column headers -->
+                        <ng-container *ngSwitchDefault>
+                            <!-- {{ column.header }} -->
+                            <ng-container *ngIf="column.sortable; else nonSortableHeader">
+                                <ng-container *ngIf="config.defaultSortingConfig else nonDefault">
+                                        <span mat-sort-header="{{column.header}}"  sortActionDescription="Sort by {{column.header}}">
+                                            {{ column.header }}
+                                        </span>
+                                </ng-container>
+                                <ng-template #nonDefault>
+                                        <span mat-sort-header="{{column.header}}"  sortActionDescription="Sort by {{column.header}}">
+                                            {{ column.header }}
+                                        </span>
+                                </ng-template>
+                            </ng-container>
+                            <ng-template #nonSortableHeader>
+                                <span>
+                                    {{ column.header }}
+                                </span>
+                            </ng-template>
+                        </ng-container>
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <ng-container [ngSwitch]="column.property">
+                        <ng-container *ngSwitchCase="'isSelect'">
+                            <mat-checkbox (click)="$event.stopPropagation()" [checked]="selection.isSelected(element)"
+                                (change)="$event ? selection.toggle(element) : null">
+                                {{ element[column.property] }}
+                            </mat-checkbox>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'contextMenu'">
+                            <div class="iconActions">
+                                <button type="button" mat-icon-button [matMenuTriggerFor]="menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu" xPosition="after">
+                                    <div class="menuItemContainer">
+                                        <button type="button" (click)="editAction(element)" *ngIf="config.contextMenu.edit" mat-menu-item>
+                                            <mat-icon>edit</mat-icon>
+                                            <span>Edit</span>
+                                        </button>
+                                    </div>
+                                    <div class="menuItemContainer">
+                                        <button type="button" *ngIf="config.contextMenu.delete" (click)="deleteAction(element)" mat-menu-item>
+                                            <mat-icon>delete</mat-icon>
+                                            <span>Delete</span>
+                                        </button>
+                                    </div>
+                                    <div class="menuItemContainer">
+                                        <button type="button" *ngIf="config.contextMenu.copy" mat-menu-item>
+                                            <mat-icon>content_copy</mat-icon>
+                                            <span>Copy</span>
+                                        </button>
+                                    </div>
+                                    <div class="menuItemContainer">
+                                        <button type="button" *ngIf="config.contextMenu.print" (click)="printAction(element)" mat-menu-item>
+                                            <mat-icon>print</mat-icon>
+                                            <span>Print</span>
+                                        </button>
+                                    </div>
+                                </mat-menu>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                            <ng-container [ngSwitch]="column.pipe">
+                                <ng-container *ngSwitchCase="'currency'">
+                                    {{ '₹ ' + (element[column.property] | INRFormat).split('₹')[1] }}
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'date'">
+                                    {{ element[column.property] | date : 'dd/MMM/yyyy'}}
+                                </ng-container>
+                                <ng-container *ngSwitchDefault>
+                                    {{ element[column.property] }}
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </td>
+            </ng-container>
+            <ng-container *ngIf="!isLoading && config.isFilterTable">
+                <tr class="generalText" class="mat-row" *matNoDataRow>
+                    <td class="mat-cell nodataonsearch generalText" [attr.colspan]="getTableColumnProperties().length">
+                      No data Found !!!
+                    </td>
+                </tr>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="getTableColumnProperties();"></tr>
+
+            <ng-container *ngIf="!config.isSingleSelection ; else singleSelectionRow">
+                <tr mat-row *matRowDef="let row; columns: getTableColumnProperties();" [@fadeIn]></tr>
+            </ng-container>
+            <ng-template #singleSelectionRow>
+                <tr mat-row *matRowDef="let row; columns: getTableColumnProperties();" [@fadeIn] [ngClass]="{'singleSelection': row.isSelected }" (click)="singleSelection(row)"></tr>
+            </ng-template>
+        </table>
+        <div class="addNew" *ngIf="!isLoading && dataSource.data !== null && dataSource.data.length === 0">
+            <ng-container *ngTemplateOutlet="addNewMessageContainer;context: { data: config.noDataLabel}" ></ng-container>
+        </div>
+        <div [style.min-height]="adjustedMinHeightfecthingdata()" class="fetchingDataCell" *ngIf="isLoading">
+            <div>
+                <span>Fetching data</span>
+                <span class="dot-1">.</span>
+                <span class="dot-2">.</span>
+                <span class="dot-3">.</span>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="config.pageOptions && !config.isDialog" class="paginator">
+        <mat-paginator #paginator [pageSizeOptions]="config.pageOptions.pageSizeOptions" [showFirstLastButtons]="config.pageOptions.showFirstLastButtons" [pageSize]="config.pageOptions.pageSize" [length]="dataSource.filteredData.length" [hidePageSize]="config.pageOptions.hidePageSize">
+        </mat-paginator>
+    </div>
+    
+    <div *ngIf="config.pageOptions && config.isDialog" class="listingTableFooter generalText">
+        <div #paginator_id>
+          <mat-paginator [showFirstLastButtons]="config.pageOptions.showFirstLastButtons" [showTotalPages]="2" [lengthData]="this.dataSource.filteredData.length" style-paginator
+            #paginator [pageSize]="config.pageOptions.pageSize" [pageSizeOptions]="config.pageOptions.pageSizeOptions" [length]="dataSource.filteredData.length" [hidePageSize]="config.pageOptions.hidePageSize"
+            >
+          </mat-paginator>
+        </div>
+        <div>
+            <ng-container *ngIf="singleSelectionData === undefined; else closeButtonEnable">
+                <button class="selectClose" type="button" (click)="selectClose()" mat-raised-button>
+                    Select & Close
+                </button>
+            </ng-container>
+            <ng-template #closeButtonEnable>
+                <button class="selectClose" type="button" (click)="selectClose()" mat-raised-button mat-dialog-close>
+                    Select & Close
+                </button>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #addNewMessageContainer let-data="data">
+    <div [style.min-height]="adjustedMinHeightNoData()" class="addNewMessageContainer">
+        <span>
+            Click <span class="AddNew"><mat-icon>add</mat-icon>Add New</span> 
+            for Inserting new {{data}}
+        </span>
+    </div>
+</ng-template>

@@ -1,0 +1,861 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import './styling/variables.scss';
+@import './styling/helper.scss';
+
+img {
+    cursor: pointer;
+}
+
+
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+
+:focus,
+:focus-visible,
+:focus-within {
+    outline: 0;
+}
+
+body {
+    margin: 0px;
+}
+
+//mat-select
+
+.mat-option {
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+//mat-select
+
+// mat-button-toggle-group  // select option tab
+mat-button-toggle-group {
+    border-radius: 5px;
+    height: 28px;
+
+    mat-button-toggle {
+        border-radius: 4px;
+        font-size: 12px;
+
+    }
+
+    .mat-button-toggle-label-content {
+        line-height: 28px;
+    }
+
+    .mat-button-toggle-checked {
+        background-color: $primary-color;
+        color: $text-color-white;
+    }
+}
+
+// mat-button-toggle-group 
+
+//mat-table
+
+.mat-table tbody {
+    background-color: $body-background;
+}
+
+.mat-paginator-outer-container {
+    background-color: $body-background;
+}
+
+//mat-table
+
+
+// mat-form-field //input
+
+.mat-label {
+    // background: white;
+    overflow: hidden;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    height: 40px;
+}
+
+.mat-form-field-subscript-wrapper {
+    margin-top: 14px !important;
+}
+
+.mat-form-field-label-wrapper {
+    top: -1.1em;
+    padding-top: 0.84375em;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.5em 0 1em 0;
+    line-height: 16px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: $input-outline;
+    box-shadow: 0px 0px 3px 0px $shadow-shade;
+    border-radius: 8px;
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: $primary-color;
+}
+
+// .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+//     color: rgb(93, 3, 3)!important;
+//     font-weight: 600;
+// }
+
+.mat-form-field-label {
+    font-size: 14px !important;
+    color: $text-color-black;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    width: auto;
+    padding: 0px 10px;
+    background-color: $body-background;
+}
+
+
+.mat-form-field-appearance-outline.mat-focused .mat-hint {
+    color: $text-color-black !important;
+    // font-weight: 600;
+    // letter-spacing: 2px;
+}
+
+.mat-input-element {
+    color: $text-color-black !important;
+    font-size: 13px !important;
+    font-weight: 500;
+}
+
+.mat-form-field-wrapper {
+    padding-bottom: 0px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0px !important;
+}
+
+.mat-form-field-appearance-outline {
+    width: 100%;
+}
+
+// mat-form-field //input
+
+
+//mat-checkbox
+
+.mat-checkbox-label {
+    // letter-spacing: 2px !important;
+    font-weight: 400;
+    font-size: 12px;
+    color: $text-color-black;
+    letter-spacing: 1px;
+}
+
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: $body-background;
+    border: 1px solid $shadow-shade;
+}
+
+.mat-checkbox-checkmark-path {
+    stroke: $text-color-white !important;
+}
+
+.mat-checkbox {
+    .mat-checkbox-frame {
+        @include chkboxRadius;
+        border-width: 1px;
+        border-color: $text-color-black;
+    }
+
+    .mat-checkbox-inner-container:hover .mat-checkbox-persistent-ripple {
+        display: none;
+    }
+
+}
+
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    @include chkboxRadius;
+    background-color: $primary-color;
+}
+
+//mat-checkbox
+
+//common conatiner
+.innerCommonWhiteDiv {
+    width: 1024px;
+    padding: 5px 20px;
+    padding-top: 0px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.innerCommonHead {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid 1px $primary-color;
+    // padding-top: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+    box-shadow: 0px 3px 3px -3px $shadow-shade;
+
+    button {
+        background-color: $body-background;
+        border: none;
+        cursor: pointer;
+
+        i {
+            font-size: 26px;
+            color: $primary-color;
+        }
+    }
+
+    .saveResetContainer {
+        display: flex;
+        width: 265px;
+        justify-content: space-between;
+        padding-bottom: 5px;
+    }
+}
+
+.generalText {
+    letter-spacing: 1px;
+    color: $text-color-black;
+    font-size: 13px;
+}
+
+.innerCommonHead_2 {
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    padding: 3px 0px 1px 0px;
+    color: $primary-color;
+    line-height: 36px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    background: $tertiary-color;
+    border-bottom: solid 0px $tertiary-color;
+}
+
+.Container {
+    box-shadow: 0px 0px 1px 0px $shadow-shade;
+    padding-bottom: 6px;
+    margin-bottom: 18px;
+    width: 100%;
+    border: 1px solid $table-header;
+    border-top: 0px;
+    background-color: $container-background;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .mat-grid-tile-content {
+        justify-content: flex-start;
+
+    }
+}
+
+.mat-dialog-container {
+    padding: 4px !important;
+}
+
+//common container
+
+//Sorting option search input 
+.mat-chip-list-wrapper .mat-standard-chip {
+    margin: 4px;
+    color: $text-color-white;
+    background-color: $primary-color;
+}
+
+mat-standard-chip .mat-chip-remove .mat-icon {
+    color: $primary-color;
+}
+
+//Sorting option search input 
+
+//mat-radio-button-group
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
+.mat-radio-button .mat-ripple-element {
+    background-color: unset !important;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+    color: $primary-color;
+    background-color: $body-background;
+}
+
+.mat-radio-outer-circle {
+    border-color: $radio-outer-circle;
+    border-width: 1px !important;
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: $primary-color;
+    background-color: $primary-color;
+}
+
+.mat-radio-button {
+    letter-spacing: 1px;
+    font-size: 12px;
+    color: $text-color-black;
+}
+
+.mat-radio-button {
+    .mat-radio-outer-circle {
+        height: 16px;
+        width: 16px;
+        top: 2px;
+        background-color: $body-background;
+    }
+
+    .mat-radio-inner-circle {
+        left: auto;
+        right: 2px;
+    }
+
+    .mat-radio-label-content {
+        padding-left: 0px;
+    }
+
+    .mat-radio-button .mat-radio-inner-circle {
+        height: 18px;
+        width: 18px;
+        top: 1px;
+        right: 3px;
+        background-color: $body-background !important;
+    }
+}
+
+//mat-radio-button-group
+
+
+//reports pdf submit icon 
+.PdficonImage {
+    height: 32px;
+    width: auto;
+}
+
+
+//reports pdf submit icon 
+
+//Headings
+.MainHeadingText {
+    color: $primary-color;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 36px;
+
+    button {
+        background-color: $body-background;
+        border: none;
+        cursor: pointer;
+    }
+}
+
+.SectionHeading {
+    margin-bottom: 6px;
+    text-align: left;
+    padding: 0px 10px;
+    font-size: 14px;
+    color: $text-color-black;
+    font-weight: 600;
+    line-height: 26px;
+    letter-spacing: 1.3px;
+    @include headingBackground;
+}
+
+.headingImgHolder {
+    margin: 0px 5px;
+    width: 15px;
+    height: auto;
+}
+
+
+//Headings
+
+
+//calenderInput
+.calenderInput {
+    .mat-icon-button {
+        justify-content: end !Important;
+    }
+
+    .mat-button-wrapper {
+        @include imageIcon(15px, "assets/images/calendericon.png");
+    }
+
+    .mat-button-wrapper svg {
+        visibility: hidden;
+    }
+
+    .mat-icon-button.cdk-program-focused .mat-button-focus-overlay {
+        display: none;
+    }
+
+    .mat-button-ripple.mat-ripple {
+        display: none;
+    }
+
+    .mat-button-focus-overlay {
+        display: none;
+    }
+}
+
+//calenderInput
+
+//textInput
+
+//textInput
+
+
+// mat header arrow 
+
+.mat-sort-header-arrow,
+[dir=rtl] .mat-sort-header-position-before .mat-sort-header-arrow {
+    color: $text-color-black;
+}
+
+// mat header arrow 
+
+
+//table 
+
+@mixin scaleIn{
+    box-shadow: 0px 0px 2px 2px $shadow-shade;
+    transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transform: scale(1.005);
+}
+.globalTable {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0px 0px 2px 1px $shadow-shade;
+    table {
+        width: 100%;
+        tr:not(:has(th)) {
+            cursor: pointer;
+        }
+        tr:not(:has(th)):hover {
+            @include scaleIn;
+        }
+
+        th.mat-header-cell:first-of-type,
+        td.mat-cell:first-of-type {
+            padding-left: 10px
+        }
+
+        th {
+            @include headingBackground;
+            color: $text-color-black !important;
+            font-weight: 600 !important;
+            padding-right: 10px;
+            letter-spacing: 1.3px;
+        }
+
+        th.mat-header-cell:first-of-type {
+            .mat-checkbox .mat-checkbox-frame {
+                background-color: $white-background !important;
+                border: 0px;
+            }
+        }
+
+        tr.mat-header-row {
+            height: 32px;
+        }
+
+        tr.mat-row {
+            height: 32px;
+
+            td.mat-cell {
+                font-size: 12px !important;
+            }
+        }
+
+        td:nth-child(2) a {
+            color: $table-hyperlink;
+            text-decoration: none;
+        }
+
+        td {
+            border-bottom-color: $table-row-border;
+        }
+    }
+
+    // .mat-paginator {
+    //     .mat-paginator-range-actions {
+    //         display: flex;
+
+    //         .mat-paginator-navigation-previous {
+    //             order: 1;
+    //             color: $primary-color;
+    //         }
+
+    //         .mat-paginator-range-label {
+    //             order: 2;
+    //             margin: 0px;
+    //         }
+
+    //         .mat-paginator-navigation-next {
+    //             order: 3;
+    //             color: $primary-color;
+    //         }
+    //     }
+    // }
+}
+
+//table
+
+//save Reset Button Reports
+.reportSaveIcon {
+    @include imageIcon(22px, "assets/images/Save.png");
+    margin-right: 25px;
+}
+
+.reportResetIcon {
+    @include imageIcon(22px, "assets/images/Reset.png");
+    margin-right: 25px;
+}
+
+.reportPrintIcon {
+    @include imageIcon(25px, "assets/images/Icon_awesome-file-pdf.png");
+    background-size: 20px;
+}
+
+.alertImage {
+    margin-left: 15px;
+    @include imageIcon(50px, "assets/images/alert.png");
+}
+
+.onHoverIcon:hover {
+    transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transform: scale(1.3);
+}
+
+.calculateIcon {
+    @include imageIcon(18px, "assets/images/calculator.png");
+    height: 28px;
+    margin-bottom: 2px;
+    cursor: pointer;
+}
+
+.backIcon{
+    @include imageIcon(25px, "assets/images/icon_back.png");
+    background-size: 25px;
+}
+
+.betaVersion{
+    @include imageIcon(25px, "assets/images/Beta.png");
+    height: 18px;
+    width: 60px;
+    background-size: 40px;
+    display: inline-block;
+}
+.comingSoon{
+    @include imageIcon(25px, "assets/images/comingsoon.png");
+    height: 18px;
+    width: 65px;
+    background-size: 65px;
+    display: inline-block;
+}
+
+//save Reset Button Reports
+
+//common Data table search Icon
+.commonDataTableSrchIcon{
+    .searchIcon{
+        border: none;
+        background: url(assets/images/filter_search.png) no-repeat;
+        background-size: contain;
+        color: var(--text-color-white);
+        width: 32px;
+        height: 32px;
+        margin-bottom: 8px;
+      }
+}
+//common Data table search Icon
+//mat Tool Tip
+
+.mat-tooltip {
+    background-color: $primary-color;
+    color: $text-color-white !important;
+    font-size: 11px;
+}
+
+//mat Tool Tip
+
+
+
+.datepicker_input {
+    position: relative;
+
+    .datepicker_icon {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        top: -5px;
+        text-align: right;
+
+        .mat-icon-button {
+            width: auto !important;
+
+            .mat-button-wrapper {
+                @include imageIcon(15px, "assets/images/calendericon.png");
+            }
+
+            .mat-button-wrapper svg {
+                visibility: hidden;
+            }
+        }
+    }
+}
+
+.mat-select {
+    .mat-select-value {
+        padding: 0px 0px;
+        font-size: 12px;
+        /* 0px 5px*/
+    }
+
+    .mat-select-arrow-wrapper {
+        transform: translateY(-6%) !important;
+    }
+}
+
+.mat-select-panel {
+    background-color: $body-background;
+}
+
+.mat-select-arrow {
+    color: $text-color-black;
+}
+
+.mat-select-value {
+    color: $text-color-black;
+}
+
+
+.mat-grid-tile {
+
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-outline-gap {
+        border-top-color: unset !important;
+    }
+
+    .mat-form-field-appearance-outline .mat-form-field-label {
+        width: auto !important;
+        background-color: $text-color-white !important;
+        /*padding: 0px 4px;*/
+    }
+}
+
+.mat-form-field-label {
+    font-size: 11px !important;
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+    border-width: normal !important;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+.mat-form-field-appearance-outline.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label {
+    background-color: $input-label-background !important;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: $primary-color !important;
+    font-weight: 400 !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-label {
+    top: 24px !important;
+}
+
+.mat-form-field-subscript-wrapper {
+    margin-top: 12px;
+    padding: 0px 2px !important;
+
+    .mat-hint {
+        font-size: 9px;
+    }
+}
+
+.mat-form-field-wrapper {
+    padding-bottom: 0px;
+}
+
+/* Added for Textarea outline apperance */
+.mat-textarea.mat-form-field-appearance-outline .mat-form-field-outline {
+    height: auto !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    height: 32px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2px 0px $shadow-shade;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-start,
+.mat-form-field-appearance-outline .mat-form-field-outline-gap,
+.mat-form-field-appearance-outline .mat-form-field-outline-end {
+    border: 1px solid;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-start {
+    border-radius: 5px 0 0 5px !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-start,
+.mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-end,
+.mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-gap {
+    border-width: 1px !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    margin-top: -5px;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+.mat-form-field-appearance-outline.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label {
+    transform: translateY(-16px) scale(0.85) !important;
+    padding: 0px 4px;
+}
+
+.actionButton {
+    @include actionButtonBackground;
+    background-size: 100% !important;
+    background-position: center !important;
+    color: $text-color-white !important;
+    border: 0px !important;
+    font-weight: 300;
+    border: 0.5px solid transparent !important;
+    line-height: 30px !important;
+    min-width: 120px !important;
+    width: auto !important;
+    box-shadow: none !important;
+    font-size: 12px;
+    height: auto;
+    border-radius: 4px !important;
+    cursor: pointer;
+    box-shadow: 0px 1px 0px 0px $shadow-shade !important;
+}
+
+.FooterBtns {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+
+// mat from field suffix 
+.sufixInput {
+    .mat-form-field-suffix {
+        color: $primary-color;
+        top: 0 !important;
+        font-weight: 500;
+    }
+}
+
+// mat from field suffix 
+
+
+//related to mat snackbar
+
+.success-message{
+    color:var(--text-color-white);
+    background-color: var(--success-msgbg);
+    .mat-button-wrapper{
+        color:var(--text-color-white);
+    }
+}
+
+.mat-snack-bar-container{
+    letter-spacing: 1px;
+    min-width: 400px !important;
+}
+.failure-message{
+    color:var(--text-color-white);
+    background-color: var(--failure-msgbg);
+    .mat-button-wrapper{
+        color:var(--text-color-white);
+    }
+}
+
+//related to mat snackbar
+
+//for disabling any elemnt
+
+.disabledElement{
+    pointer-events: none;
+    opacity: 0.65;
+}
+
+//for disabling any elemnt
+
+.button-container{
+    display: flex;
+    justify-content: flex-end;
+    
+    .actionConfirmation{
+        @include flexSpaceAround;
+        width: 35%;
+        padding-bottom: 8px;
+    }
+    button{
+        @include actionButtonBackground;
+        color: white;
+        line-height: 32px;
+        border: 0;
+        cursor: pointer;
+        width: 70px;
+    }
+    .actionAlert{
+        width: 35%;
+        padding-bottom: 8px;
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 25px;
+    }
+}
+.alertContainer{
+    color: $text-color-black;
+    height: 150px;
+    width: 640px;
+    @include flexSpaceAroundColumn;
+    p{
+    text-align: left;
+    line-height: 34px;
+    }
+    background-color: $body-background;
+}
+
+.alertMessageContainer{
+    display: flex;
+    align-items: center;
+
+}
+
+
+.mat-progress-spinner {
+    position: absolute !important;
+    margin-left: 40px;
+}
+.mat-progress-spinner svg {
+    height: 30px !important;
+    width: 25px !important;
+}
+
+.successImage {
+    margin-left: 15px;
+    @include imageIcon(50px, "assets/images/successImg.png");
+}

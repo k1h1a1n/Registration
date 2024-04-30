@@ -1,0 +1,47 @@
+
+@import './../../../../styles.scss';
+.button-container{
+    display: flex;
+    justify-content: flex-end;
+    
+    .actionConfirmation{
+        @include flexSpaceAround;
+        width: 35%;
+        padding-bottom: 8px;
+    }
+    button{
+        @include actionButtonBackground;
+        color: white;
+        line-height: 32px;
+    }
+    .actionAlert{
+        width: 35%;
+        padding-bottom: 8px;
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 25px;
+    }
+}
+.alertContainer{
+    color: $text-color-black;
+    height: 150px;
+    width: 640px;
+    @include flexSpaceAroundColumn;
+    p{
+    text-align: left;
+    line-height: 34px;
+    }
+    background-color: $body-background;
+}
+
+.alertMessageContainer{
+    display: flex;
+    align-items: center;
+}
+
+
+.textMessage{
+    margin-left: 20px;
+    font-weight: 500;
+    font-size: 14px;
+}

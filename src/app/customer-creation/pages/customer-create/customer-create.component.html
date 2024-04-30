@@ -1,0 +1,260 @@
+<form [formGroup]="form">
+    <div class="innerCommonWhiteDiv">
+        <div class="innerCommonHead">
+          <div class="MainHeadingText">Landmark Customer Creation</div>
+        </div>
+        <div class="Container">
+            <div class="SectionHeading">Verification</div>
+            <div class="getOtp">
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Customer Mobile</mat-label>
+                        <input formControlName="cusMobile" matInput type="number" placeholder="Enter Mobile Number">
+                        <mat-hint
+                          *ngIf="form.controls['cusMobile'].hasError('required') && (form.controls['cusMobile'].dirty || form.controls['cusMobile'].touched)">This
+                          field is required</mat-hint>
+                        <mat-hint
+                          *ngIf="form.controls['cusMobile'].hasError('pattern') && (form.controls['cusMobile'].dirty || form.controls['cusMobile'].touched)">Please
+                          enter valid mobile number</mat-hint>
+                        <mat-hint class="nonError"
+                          *ngIf="(!form.controls['cusMobile'].touched) && (!form.controls['cusMobile'].dirty)">Please
+                          enter mobile number</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <button type="button" class="actionButton" (click)="getOtp(alertTemplate)" [ngClass]="{'disabledElement': isButtonDisabled}">
+                        <ng-container  *ngIf="isLoading">
+                            <mat-spinner class="matSPinner"></mat-spinner>
+                        </ng-container>
+                        <ng-container *ngIf="isButtonDisabled && !isLoading; else enableButton">{{ remainingTime }}s</ng-container>
+                        <ng-template #enableButton>
+                           <span>
+                            &nbsp;
+                            {{!isLoading ? otpSend : ''}}
+                           </span> 
+                        </ng-template>
+                    </button>
+                </div>
+            </div>
+            <div class="getOtp" [ngClass]="{'disabledElement': otpSend === 'Get OTP'}">
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Verify OTP</mat-label>
+                        <input formControlName="verOTP" matInput type="number" placeholder="Enter OTP">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <button type="button" class="actionButton" (click)="verifyOtp(alertTemplate)">Verify OTP</button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="registrationEnbled">
+
+            <div class="Container registrationForm">
+                <div class="SectionHeading">Registration Form</div>
+                <div class="row1"> 
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input formControlName="firstName" matInput placeholder="Enter first name">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Middle Name</mat-label>
+                            <input formControlName="middleName" matInput placeholder="Enter middle name">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input formControlName="lastName" matInput placeholder="Enter last name">
+                        </mat-form-field>
+                    </div>
+                    <div class="disabledElement">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Company Name</mat-label>
+                            <input formControlName="companyName" readonly matInput>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row2">
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Pin Code</mat-label>
+                            <input formControlName="pinCode" type="number" matInput (blur)="onPinCodeEntry()" placeholder="Enter PinCode">
+                            <mat-hint
+                              *ngIf="form.controls['pinCode'].hasError('required') && (form.controls['pinCode'].dirty || form.controls['pinCode'].touched)">This
+                              field is required</mat-hint>
+                            <mat-hint
+                              *ngIf="form.controls['pinCode'].hasError('pattern') && (form.controls['pinCode'].dirty || form.controls['pinCode'].touched)">Please
+                              enter valid pin code</mat-hint>
+                            <mat-hint class="nonError"
+                              *ngIf="(!form.controls['pinCode'].touched) && (!form.controls['pinCode'].dirty)">Please
+                              enter pincode</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="disabledElement">
+                        <mat-form-field appearance="outline">
+                            <mat-label>City</mat-label>
+                            <input formControlName="city" readonly matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="disabledElement">
+                        <mat-form-field appearance="outline">
+                            <mat-label>State</mat-label>
+                            <input formControlName="state" readonly matInput>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Select Division</mat-label>
+                            <mat-select formControlName="division" (valueChange)="onDivChange($event)">
+                                <ng-container *ngIf="(divisionData$ | async) as div;else noDataImages">
+                                    <mat-option *ngIf="div.length === 0" disabled >No data available</mat-option>
+                                    <mat-option *ngFor="let option of div" [value]="option.DiviName">{{option.DiviName}}</mat-option>
+                                </ng-container>
+                                <ng-template #noDataImages>
+                                    <mat-option disabled>No data available</mat-option>
+                                </ng-template>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Select Branch</mat-label>
+                            <mat-select formControlName="branch">
+                                <ng-container *ngIf="(branchData$ | async) as branch;else noDataBranch">
+                                    <mat-option *ngIf="branch.length === 0" disabled >No data available</mat-option>
+                                    <mat-option *ngFor="let option of branch" [value]="option.BranCode">{{option.BranName}}</mat-option>
+                                </ng-container>
+                                <ng-template #noDataBranch>
+                                    <mat-option disabled>No data available</mat-option>
+                                </ng-template>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row3">
+                    <div class="Container">
+                        <div class="SectionHeading">Address Details</div>
+                        <div class="address">
+                            <textarea formControlName="add1" matInput placeholder="Address 1"></textarea>
+                            <textarea formControlName="add2" matInput placeholder="Address 2"></textarea>
+                            <textarea formControlName="add3" matInput placeholder="Address 3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Mobile</mat-label>
+                        <input formControlName="mobile" matInput type="number" placeholder="Enter mobile number">
+                        <mat-hint
+                          *ngIf="form.controls['mobile'].hasError('required') && (form.controls['mobile'].dirty || form.controls['mobile'].touched)">This
+                          field is required</mat-hint>
+                        <mat-hint
+                          *ngIf="form.controls['mobile'].hasError('pattern') && (form.controls['mobile'].dirty || form.controls['mobile'].touched)">Please
+                          enter valid mobile number</mat-hint>
+                        <mat-hint class="nonError"
+                          *ngIf="(!form.controls['mobile'].touched) && (!form.controls['mobile'].dirty)">Please
+                          enter mobile number</mat-hint>
+                    </mat-form-field>
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Referor Mail Id</mat-label>
+                            <input formControlName="email" matInput placeholder="Enter mail id">
+                            <mat-hint
+                              *ngIf="form.controls['email'].hasError('required') && (form.controls['email'].dirty || form.controls['email'].touched)">This
+                              field is required</mat-hint>
+                            <mat-hint
+                              *ngIf="form.controls['email'].hasError('pattern') && (form.controls['email'].dirty || form.controls['email'].touched)">Please
+                              enter valid email address.</mat-hint>
+                            <mat-hint class="nonError"
+                              *ngIf="(!form.controls['email'].touched) && (!form.controls['email'].dirty)">Please
+                              enter email id.</mat-hint>
+                          </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field class="calenderInput" appearance="outline">
+                            <mat-label>Date of Birth</mat-label>
+                            <input formControlName="dob" matInput [matDatepicker]="dob"/>
+                            <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
+                            <mat-datepicker #dob></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Select Gender</mat-label>
+                            <mat-select formControlName="gender">
+                                    <mat-option value="M">Male</mat-option>
+                                    <mat-option value="F">Female</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Service Provider</mat-label>
+                            <input formControlName="serviceProvider" matInput type="number" placeholder="Enter here">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="createLogin" (click)="onSavePosp(alertTemplate)"><button type="button" class="actionButton">Submit</button></div>
+        </div>
+
+    </div>
+</form>
+
+<!-- Alert Popup Related -->
+<ng-template #alertTemplate>
+    <div class="alertContainer">
+      <p class="SectionHeading">{{( alertController.action ? 'Confirm' : 'Alert' )}}</p>
+      <div class="alertMessageContainer">
+          <!-- <div class="alertImage"></div> -->
+          <div [ngClass]="{alertImage: !alertController.success,successImage: alertController.success}"></div>
+          <div class="textMessage m-l">{{ alertController.message }}</div>
+      </div>
+      <div class="button-container">
+          <ng-container [ngTemplateOutlet]="alertController.action ? actionConfirmation : actionAlert "></ng-container>
+      </div>
+    </div>
+</ng-template>
+
+<ng-template #actionAlert>
+<div class="actionAlert">
+    <button mat-raised-button (click)="handleOK()">OK</button>
+</div>
+</ng-template>
+ 
+<ng-template #actionConfirmation>
+<div class="actionConfirmation">
+    <button mat-raised-button (click)="handleConfirm(true)">Yes</button>
+    <button mat-raised-button (click)="handleCancel()">No</button>
+</div>
+</ng-template>
+<!-- Alert Popup Related -->
+
+<ng-template #signUpForm>
+        <div class="row1"> 
+            <div>
+                <mat-form-field>
+                    <mat-label>First Name</mat-label>
+                    <input formControlName="firstName" matInput placeholder="Enter first name">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <mat-label>Middle Name</mat-label>
+                    <input formControlName="middleName" matInput placeholder="Enter middle name">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <mat-label>Last Name</mat-label>
+                    <input formControlName="lastName" matInput placeholder="Enter last name">
+                </mat-form-field>
+            </div>
+        </div>
+</ng-template>

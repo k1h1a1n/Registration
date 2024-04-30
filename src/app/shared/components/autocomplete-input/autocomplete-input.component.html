@@ -1,0 +1,38 @@
+<ng-container [formGroup]="autoCompleteForm">
+  <mat-form-field appearance="outline">
+    <mat-label>{{ inputName }}</mat-label>
+
+    <input matInput autocomplete="off" [attr.formcontrolname]="formControlNameInput"
+      [formControlName]="formControlNameInput" [matAutocomplete]="optionSuggest" (click)="autoComplete.select()"
+      (ngModelChange)="onChange($event)" #autoComplete />
+
+  </mat-form-field>
+
+  <mat-autocomplete [displayWith]="setDisplayValue()" (optionSelected)="onSelection($event)" #optionSuggest="matAutocomplete">
+
+    <ng-container *ngIf="optionList$ | async as suggestList; else loadingSuggestion">
+
+      <ng-container *ngIf="suggestList.length === 0; else showData">
+        <mat-option disabled>{{ noDataMessage }}</mat-option>
+      </ng-container>
+
+      <ng-template #showData>
+
+        <cdk-virtual-scroll-viewport [ngStyle]="{ 'height': suggestList.length < 4 ? ( suggestList.length < 2 ? '50px' :'100px') : '200px'}" itemSize="25" >
+          <mat-option *cdkVirtualFor="let suggestOpt of suggestList;" [value]="suggestOpt">
+            <ng-container *ngFor="let key of _displayFldKey; index as i">
+              {{ suggestOpt[key] }}{{ i < _displayFldKey.length - 1 ? " - " : "" }} 
+            </ng-container>
+          </mat-option>
+        </cdk-virtual-scroll-viewport>
+
+      </ng-template>
+
+    </ng-container>
+
+    <ng-template #loadingSuggestion>
+      <mat-option disabled>{{ loadingMessage }}</mat-option>
+    </ng-template>
+
+  </mat-autocomplete>
+</ng-container>
