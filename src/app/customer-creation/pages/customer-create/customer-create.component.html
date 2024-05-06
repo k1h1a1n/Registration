@@ -1,3 +1,4 @@
+<app-pre-loading-msg [customMessage]="loadingMsg"></app-pre-loading-msg>
 <form [formGroup]="form">
     <div class="innerCommonWhiteDiv">
         <div class="innerCommonHead">
@@ -22,21 +23,12 @@
                     </mat-form-field>
                 </div>
                 <div>
-                    <button type="button" class="actionButton" (click)="getOtp(alertTemplate)" [ngClass]="{'disabledElement': isButtonDisabled}">
-                        <ng-container  *ngIf="isLoading">
-                            <mat-spinner class="matSPinner"></mat-spinner>
-                        </ng-container>
-                        <ng-container *ngIf="isButtonDisabled && !isLoading; else enableButton">{{ remainingTime }}s</ng-container>
-                        <ng-template #enableButton>
-                           <span>
-                            &nbsp;
-                            {{!isLoading ? otpSend : ''}}
-                           </span> 
-                        </ng-template>
+                    <button type="button" class="actionButton" (click)="getOtp(alertTemplate)">
+                        {{ !loadingMsg ? 'Get OTP' : 'Resend OTP' }}
                     </button>
                 </div>
             </div>
-            <div class="getOtp" [ngClass]="{'disabledElement': otpSend === 'Get OTP'}">
+            <div *ngIf="loadingMsg" class="getOtp">
                 <div>
                     <mat-form-field appearance="outline">
                         <mat-label>Verify OTP</mat-label>
@@ -149,16 +141,7 @@
                 <div class="row4">
                     <mat-form-field appearance="outline">
                         <mat-label>Mobile</mat-label>
-                        <input formControlName="mobile" matInput type="number" placeholder="Enter mobile number">
-                        <mat-hint
-                          *ngIf="form.controls['mobile'].hasError('required') && (form.controls['mobile'].dirty || form.controls['mobile'].touched)">This
-                          field is required</mat-hint>
-                        <mat-hint
-                          *ngIf="form.controls['mobile'].hasError('pattern') && (form.controls['mobile'].dirty || form.controls['mobile'].touched)">Please
-                          enter valid mobile number</mat-hint>
-                        <mat-hint class="nonError"
-                          *ngIf="(!form.controls['mobile'].touched) && (!form.controls['mobile'].dirty)">Please
-                          enter mobile number</mat-hint>
+                        <input formControlName="cusMobile" matInput type="number" placeholder="Enter mobile number" readonly>
                     </mat-form-field>
                     <div>
                         <mat-form-field appearance="outline">
@@ -206,6 +189,7 @@
 
     </div>
 </form>
+
 
 <!-- Alert Popup Related -->
 <ng-template #alertTemplate>

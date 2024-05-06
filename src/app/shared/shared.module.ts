@@ -27,6 +27,7 @@ import { DecimalInputDirective } from './directives/percent-validation.directive
 import { NgxEditorModule } from 'ngx-editor';
 import { TextEditorComponent } from './components/text-editor/text-editor.component';
 import { AgeDirective } from './directives/age.directive';
+import {PreLoadingMsgComponent} from 'src/app/shared/components/pre-loading-msg/pre-loading-msg.component'
 
 
 export const MY_FORMATS = {
@@ -52,6 +53,7 @@ const CompDirList: any[] = [
   DecimalInputDirective,
   AgeDirective,
   TextEditorComponent,
+  PreLoadingMsgComponent
 ];
 
 const PipeList: any[] = [
@@ -71,7 +73,7 @@ const PipeList: any[] = [
     RouterModule,
     ReactiveFormsModule,
     ScrollingModule,
-    NgxEditorModule
+    NgxEditorModule,
   ],
   providers: [
     PipeList,
@@ -84,7 +86,7 @@ const PipeList: any[] = [
     },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: LocalCacheTTLInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AppendCommonDetails, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: AppendCommonDetails, multi: true },
   ],
   exports: [
     CompDirList,

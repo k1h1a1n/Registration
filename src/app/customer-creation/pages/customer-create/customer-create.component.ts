@@ -14,50 +14,43 @@ import { SharedService } from 'src/app/shared/services/shared.service';
   styleUrls: ['./customer-create.component.scss']
 })
 export class CustomerCreateComponent implements OnInit {
-  isButtonDisabled : boolean = false;
   form: FormGroup;
   alertController: { action: boolean, message: string , success : boolean } = { action: false, message: '' , success : false };
-  private dialog = inject(MatDialog);
-  remainingTime: number = 5;
-  timer: any;
-  otpSend: string = 'Get OTP';
-  isLoading: boolean = false;
-  otpSent: boolean = false;
   pinCodeOutput$ : Observable<any>;
   divisionData$ : Observable<any>;
   branchData$ : Observable<any>;
   registrationEnbled : boolean = false;
-  private ss =  inject(SharedService)
-
+  loadingMsg:string;
+  private ss =  inject(SharedService);
+  private dialog = inject(MatDialog);
   constructor(fb: FormBuilder, @Optional() private dialogRef: MatDialogRef<any> , private verificationService : CustomerCreateService) {
     this.form = fb.group({
       verOTP: [null, [Validators.required]],
       cusMobile: [null, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       firstName : [null, [Validators.required]],
-      middleName : [null],
-      lastName : [null],
-      companyName : [null],
+      middleName : [''],
+      lastName : [''],
+      companyName : [''],
       pinCode : [null , [Validators.required , Validators.pattern('^[0-9]{6}$')]],
       branch : [null , [Validators.required]],
       division : [null , [Validators.required]],
       city : [null],
       state : [null],
-      add1 : [null , [Validators.required]],
-      add2 : [null],
-      add3 : [null],
-      mobile: [null, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
+      add1 : ['' , [Validators.required]],
+      add2 : [''],
+      add3 : [''],
+      // mobile: [null, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      email: [null, [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
       gender : ['M'],
-      dob : [null],
-      serviceProvider : [null]
+      dob : [null , [Validators.required]],
+      serviceProvider : [null , [Validators.required]]
     });
     this.form.get('firstName').valueChanges.subscribe(() => this.updateCompanyName());
     this.form.get('middleName').valueChanges.subscribe(() => this.updateCompanyName());
     this.form.get('lastName').valueChanges.subscribe(() => this.updateCompanyName());
   }
-
-  ngOnInit(): void {}
-
+  ngOnInit(): void {
+  }
   updateCompanyName(): void {
     const firstName = this.form.get('firstName').value || '';
     const middleName = this.form.get('middleName').value || '';
@@ -66,44 +59,12 @@ export class CustomerCreateComponent implements OnInit {
     const companyName = `${firstName} ${middleName} ${lastName}`.trim();
     this.form.get('companyName').setValue(companyName);
   }
-
-  // getOtp(dialogTemplate?: TemplateRef<NgTemplateOutlet>) {
-  //   if (this.form.get('cusMobile')?.status !== 'INVALID') {
-  //     const input = { "Mobile": this.form.get('cusMobile')?.value };
-  //     this.isLoading = true;
-  //     this.verificationService.getOtp(input).subscribe(
-  //       {
-  //         next: (res) => {
-  //           if (res.type === 'success') {
-  //             this.alertController = { action: false, message: `OTP successfully sent to this mobile ${input.Mobile} number.` }
-  //             const dialogRef = this.OpenDialog(dialogTemplate, {
-  //               disableClose: true,
-  //             });
-  //           } else {
-  //             this.alertController = { action: false, message: `Something went wrong` }
-  //             const dialogRef = this.OpenDialog(dialogTemplate, {
-  //               disableClose: true,
-  //             });
-  //             this.isButtonDisabled = false; // Move this line inside the else block
-  //           }
-  //         },
-  //         error: () => { this.isLoading = false;},
-  //         complete: () => { 
-  //           this.isLoading = false;
-  //           this.isButtonDisabled = true;
-  //           this.timerFunction();
-  //           this.isButtonDisabled = false;
-  //         },
-  //       }
-  //     );
-  //   }
-  // }  
-
   onPinCodeEntry(){
     if(this.form.get('pinCode')?.status !== 'INVALID'){
+      this.loadingMsg = `Fecthing data for pincode ${this.form.get('pinCode')?.value}`;
       const input = {"Partid" : "4444444" , "Pincode" : this.form.get('pinCode')?.value};
       this.verificationService.getCityDivBranch(input).subscribe((res)=>{
-        const resData = JSON.parse(res.message);
+      const resData = JSON.parse(res.message);
       this.pinCodeOutput$ = of(resData?.DivBranch);
       const uniqueDiv = resData?.DivBranch.reduce((acc, curr) => {
         const found = acc.find(item => item.DiviName === curr.DiviName);
@@ -126,14 +87,13 @@ export class CustomerCreateComponent implements OnInit {
      const branchData = res.filter((x) => {
       return x.DiviName === value
      });
-     console.log(branchData)
      this.branchData$ = of(branchData);
     });
   }
   getOtp(dialogTemplate?: TemplateRef<NgTemplateOutlet>) {
     if (this.form.get('cusMobile')?.status !== 'INVALID') {
+      this.loadingMsg = "Please wait while we send an OTP to your mobile number.";
       const input = { "Mobile": this.form.get('cusMobile')?.value };
-      this.isLoading = true;
       this.verificationService.getOtp(input).subscribe(
         {
           next: (res) => {
@@ -142,7 +102,6 @@ export class CustomerCreateComponent implements OnInit {
               const dialogRef = this.OpenDialog(dialogTemplate, {
                 disableClose: true,
               });
-              this.otpSent = true; // Set otpSent to true after OTP is sent
             } else {
               this.alertController = { action: false, message: `Something went wrong` , success : false }
               const dialogRef = this.OpenDialog(dialogTemplate, {
@@ -150,34 +109,15 @@ export class CustomerCreateComponent implements OnInit {
               });
             }
           },
-          error: () => { 
-            this.isLoading = false;
-            this.isButtonDisabled = false; // Reset isButtonDisabled on error
-          },
-          complete: () => {
-            this.isLoading = false; // Hide loading spinner
-            // No need to set isButtonDisabled to true and then immediately to false
-            this.timerFunction();
-          },
+          error: () => {},
+          complete: () => {},
         }
       );
     }
   }
-  
-  timerFunction(){
-    this.timer = setInterval(() => {
-      this.remainingTime--;
-      if (this.remainingTime == 0) {
-        clearInterval(this.timer);
-        this.isButtonDisabled = false;
-        this.remainingTime = 5;
-      }
-    }, 1000);
-    this.otpSend = 'Resend OTP';
-  }
-
   verifyOtp(dialogTemplate?: TemplateRef<NgTemplateOutlet>){
     if(this.form.get('verOTP')?.status !== 'INVALID'){
+      this.loadingMsg = "Please wait while we verify your OTP.";
       const input = {"Mobile" : this.form.get('cusMobile')?.value, "OTP" : this.form.get('verOTP')?.value}
       this.verificationService.verifyOtp(input).subscribe((res)=> {
         const data = JSON.parse(res?.message);
@@ -203,7 +143,6 @@ export class CustomerCreateComponent implements OnInit {
       })
     }
   }
-
   OpenDialog(template: any, config?: any): MatDialogRef<any> {
     return this.dialog.open(template, config);
   }
@@ -222,6 +161,7 @@ export class CustomerCreateComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
+    this.loadingMsg = `Kindly wait, while we process your subscription request`;
     const input : CustomerData = {
       FirstName: this.form.get('firstName')?.value,
       MiddleName: this.form.get('middleName')?.value,
@@ -232,7 +172,7 @@ export class CustomerCreateComponent implements OnInit {
       Add1: this.form.get('add1')?.value,
       Add2: this.form.get('add2')?.value,
       Add3: this.form.get('add3')?.value,
-      Mobile1: String(this.form.get('mobile')?.value),
+      Mobile1: String(this.form.get('cusMobile')?.value),
       EmailId1: this.form.get('email')?.value,
       Branch: this.form.get('branch')?.value,
       Division: this.form.get('division')?.value,
@@ -250,10 +190,42 @@ export class CustomerCreateComponent implements OnInit {
     this.verificationService.savePosp(input).subscribe((res)=>{
       if(res){
         const data = JSON.parse(res.message);
-
         if(res?.code === 0){
           if(data?.Status === "1"){
-            const displayMessage = `Your generated customer Id is ${data?.Custid} for mobile number ${input.Mobile1}`;
+            this.createLogin(data?.Custid , input.hSerProvID , input.Mobile1 , input.EmailId1 , dialogTemplate)
+            // const displayMessage = `Your generated customer Id is ${data?.Custid} for mobile number ${input.Mobile1}`;
+            // this.alertController = { action: false, message: displayMessage , success : true};
+            // const dialogRef = this.OpenDialog(dialogTemplate, {
+            //   disableClose: true,
+            // });
+          }else{
+            this.alertController = { action: false, message: data?.Message , success : false};
+            const dialogRef = this.OpenDialog(dialogTemplate, {
+              disableClose: true,
+            });
+          }
+        }else{
+          this.alertController = { action: false, message: `Dear User, an error has occurred while processing your subscription details. Kindly contact Support using your Mobile No ${input.Mobile1} as reference.` , success : false};
+          const dialogRef = this.OpenDialog(dialogTemplate, {
+            disableClose: true,
+          });
+        }
+      }
+    });
+  }
+  createLogin(custId : string , partId : string  , mobileNo : string , email : string ,dialogTemplate : TemplateRef<NgTemplateOutlet>){
+    const input : CreateLogin = {
+      CustID: custId,
+      PartID: partId,
+      ProcType: '5'
+    }
+    this.loadingMsg = `Proceeding to activate Subscription, this may take a few mins`;
+    this.verificationService.craeteLogin(input).subscribe((res)=> {
+      if(res){
+        const data = JSON.parse(res.message);
+        if(res?.code === 0){
+          if(data?.Status === "1"){
+            const displayMessage = `Congratulations! Your iMagic Subscription has been activated. We have sent out a Welcome email to ${email} with a link to access the Integrated iMagic Backoffice Platform along with login credentials.`;
             this.alertController = { action: false, message: displayMessage , success : true};
             const dialogRef = this.OpenDialog(dialogTemplate, {
               disableClose: true,
@@ -265,29 +237,11 @@ export class CustomerCreateComponent implements OnInit {
             });
           }
         }else{
-          this.alertController = { action: false, message: 'Something went wrong' , success : false};
+          this.alertController = { action: false, message: ` Dear Subscriber, an error occurred while activating your subscription - kindly contact support quoting your CustID : ${custId} and Mobile no : ${mobileNo} as reference.` , success : false};
           const dialogRef = this.OpenDialog(dialogTemplate, {
             disableClose: true,
           });
         }
-      }
-    });
-  }
-
-  createLogin(custId : string , partId : string , dialogTemplate){
-    const input : CreateLogin = {
-      CustID: custId,
-      PartID: partId,
-      ProcType: '3' //hard coded
-    }
-    this.verificationService.craeteLogin(input).subscribe((res)=> {
-      if(res?.status){
-
-      }else{
-        this.alertController = { action: false, message: 'Something went wrong' , success : false};
-          const dialogRef = this.OpenDialog(dialogTemplate, {
-            disableClose: true,
-          });
       }
     })
   }
