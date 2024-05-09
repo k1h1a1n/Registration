@@ -535,7 +535,8 @@ mat-standard-chip .mat-chip-remove .mat-icon {
 
 .alertImage {
     margin-left: 15px;
-    @include imageIcon(50px, "assets/images/alert.png");
+    @include imageIcon(30px, "assets/images/alert.png");
+    width: 50px;
 }
 
 .onHoverIcon:hover {

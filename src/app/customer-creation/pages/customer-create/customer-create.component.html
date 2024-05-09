@@ -2,7 +2,7 @@
 <form [formGroup]="form">
     <div class="innerCommonWhiteDiv">
         <div class="innerCommonHead">
-          <div class="MainHeadingText">Landmark Customer Creation</div>
+          <div class="MainHeadingText">Imagic (Unified)</div>
         </div>
         <div class="Container">
             <div class="SectionHeading">Verification</div>
@@ -75,7 +75,7 @@
                     <div>
                         <mat-form-field appearance="outline">
                             <mat-label>Pin Code</mat-label>
-                            <input formControlName="pinCode" type="number" matInput (blur)="onPinCodeEntry()" placeholder="Enter PinCode">
+                            <input formControlName="pinCode" type="number" matInput (blur)="onPinCodeEntry(alertTemplate)" placeholder="Enter PinCode">
                             <mat-hint
                               *ngIf="form.controls['pinCode'].hasError('required') && (form.controls['pinCode'].dirty || form.controls['pinCode'].touched)">This
                               field is required</mat-hint>
@@ -145,7 +145,7 @@
                     </mat-form-field>
                     <div>
                         <mat-form-field appearance="outline">
-                            <mat-label>Referor Mail Id</mat-label>
+                            <mat-label>Email Id</mat-label>
                             <input formControlName="email" matInput placeholder="Enter mail id">
                             <mat-hint
                               *ngIf="form.controls['email'].hasError('required') && (form.controls['email'].dirty || form.controls['email'].touched)">This

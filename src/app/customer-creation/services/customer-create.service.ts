@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, delay, tap } from 'rxjs';
+import { Observable, catchError, delay, tap, throwError } from 'rxjs';
 import { CreateLogin, CustomerData } from '../model/customer-create';
 import { environment } from 'src/environments/environment';
 import { PreLoadingService } from 'src/app/shared/services/pre-loading.service';
@@ -22,7 +22,9 @@ export class CustomerCreateService {
       tap(() => this.loadingService.setLoadingState(false)),
       catchError((error) => {
         this.loadingService.setLoadingState(false);
-        throw error;
+        return throwError(() => { 
+          return error;
+        });
       })
     )
   }
@@ -36,7 +38,9 @@ export class CustomerCreateService {
       tap(() => this.loadingService.setLoadingState(false)),
       catchError((error) => {
         this.loadingService.setLoadingState(false);
-        throw error;
+        return throwError(() => { 
+          return error;
+        });
       })
     )
   }
@@ -50,7 +54,9 @@ export class CustomerCreateService {
       tap(() => this.loadingService.setLoadingState(false)),
       catchError((error) => {
         this.loadingService.setLoadingState(false);
-        throw error;
+        return throwError(() => { 
+          return error;
+        });
       })
     )
   }
@@ -62,9 +68,10 @@ export class CustomerCreateService {
     return this.http.post<any>(`${environment.baseURL}/api/CommonAPI/SavePOSPCustomer`, input, header).pipe(
       tap(() => this.loadingService.setLoadingState(false)),
       catchError((error) => {
-        console.error('Error fetching data:', error);
         this.loadingService.setLoadingState(false);
-        throw error;
+        return throwError(() => {
+          return error;
+        });
       })
     )
   }
@@ -78,7 +85,9 @@ export class CustomerCreateService {
       tap(() => this.loadingService.setLoadingState(false)),
       catchError((error) => {
         this.loadingService.setLoadingState(false);
-        throw error;
+        return throwError(() => { 
+          return error;
+        });
       })
     )
   }
